@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Resume Screener</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="page">
+
+    <header class="site-header">
+      <div class="logo">
+        <span class="logo-mark">◈</span>
+        <span class="logo-text">ResumeAI</span>
+      </div>
+      <p class="tagline">Match your resume to any job — instantly</p>
+    </header>
+
+    <main class="main">
+
+      <div class="input-grid">
+
+        <!-- Job Description -->
+        <div class="panel">
+          <div class="panel-header">
+            <span class="panel-label">01</span>
+            <span class="panel-title">Job description</span>
+          </div>
+          <textarea id="jd" placeholder="Paste the full job description here…&#10;&#10;e.g. We're looking for a Python developer with experience in NLP, REST APIs, and machine learning frameworks like TensorFlow or PyTorch..."></textarea>
+        </div>
+
+        <!-- Resume -->
+        <div class="panel">
+          <div class="panel-header">
+            <span class="panel-label">02</span>
+            <span class="panel-title">Your resume</span>
+            <div class="tab-group">
+              <button class="tab active" id="tab-paste" onclick="switchTab('paste')">Paste</button>
+              <button class="tab" id="tab-upload" onclick="switchTab('upload')">Upload PDF</button>
+            </div>
+          </div>
+
+          <div id="paste-panel">
+            <textarea id="resume" placeholder="Paste your resume text here…&#10;&#10;e.g. Final year CS student with projects in Python, Flask, and scikit-learn..."></textarea>
+          </div>
+
+          <div id="upload-panel" class="hidden">
+            <div class="drop-zone" id="drop-zone"
+              onclick="document.getElementById('file-input').click()"
+              ondragover="handleDragOver(event)"
+              ondragleave="handleDragLeave(event)"
+              ondrop="handleDrop(event)">
+              <div class="dz-icon">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="12" y1="18" x2="12" y2="12"/><polyline points="9,15 12,12 15,15"/></svg>
+              </div>
+              <p class="dz-text">Click to upload or drag & drop</p>
+              <p class="dz-sub">PDF files only · Max 10MB</p>
+            </div>
+            <input type="file" id="file-input" accept=".pdf" class="hidden" onchange="handleFileSelect(event)">
+            <div id="file-pill" class="hidden file-pill">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
+              <span class="fname" id="file-name"></span>
+              <span class="pill-status" id="pill-status">Reading...</span>
+              <button class="remove-btn" onclick="clearFile()">✕</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="cta-row">
+        <button class="analyze-btn" id="analyze-btn" onclick="analyze()">
+          <span id="btn-text">Analyze match</span>
+          <span class="btn-arrow">→</span>
+        </button>
+      </div>
+
+      <!-- Loading -->
+      <div id="loading" class="loading hidden">
+        <div class="spinner"></div>
+        <p>Analyzing your match…</p>
+      </div>
+
+      <!-- Results -->
+      <div id="results" class="results hidden">
+
+        <div class="results-header">
+          <h2>Analysis results</h2>
+          <button class="reset-btn" onclick="resetForm()">Start over</button>
+        </div>
+
+        <div class="score-grid" id="score-grid"></div>
+
+        <div class="result-summary" id="result-summary"></div>
+
+        <div class="result-two-col">
+          <div class="result-section" id="matched-section"></div>
+          <div class="result-section" id="missing-section"></div>
+        </div>
+
+        <div class="result-section full-width" id="tips-section"></div>
+
+      </div>
+
+    </main>
+
+    <footer class="site-footer">
+      <p>Built with the Anthropic API · <a href="https://github.com" target="_blank">View on GitHub</a></p>
+    </footer>
+
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
