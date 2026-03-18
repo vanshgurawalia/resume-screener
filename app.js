@@ -118,8 +118,9 @@ ${resumeContent}`;
       })
     });
 
-    if (!res.ok) throw new Error(`API error: ${res.status}`);
     const data = await res.json();
+    console.log('API response:', JSON.stringify(data));
+    if (!res.ok || !data.content) throw new Error('API error: ' + JSON.stringify(data));
     const raw = data.content.map(i => i.text || '').join('');
     const clean = raw.replace(/```json|```/g, '').trim();
     const parsed = JSON.parse(clean);
