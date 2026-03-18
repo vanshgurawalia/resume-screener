@@ -111,17 +111,12 @@ ${resumeContent}`;
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 1000,
-        messages: [{ role: 'user', content: prompt }]
-      })
+      body: JSON.stringify({ prompt })
     });
 
     const data = await res.json();
-    console.log('API response:', JSON.stringify(data));
-    if (!res.ok || !data.content) throw new Error('API error: ' + JSON.stringify(data));
-    const raw = data.content.map(i => i.text || '').join('');
+    if (data.error) throw new Error('API error: ' + data.error);
+    const raw = data.text || '';
     const clean = raw.replace(/```json|```/g, '').trim();
     const parsed = JSON.parse(clean);
     renderResults(parsed);
